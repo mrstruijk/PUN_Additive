@@ -12,8 +12,8 @@ namespace mrstruijk
 {
     public class SceneManagement : MonoBehaviour
     {
-        [SerializeField] [Range(0,10)] private int baseScenesToLoad = 4;
-        public int BaseScenesToLoad => baseScenesToLoad;
+        [SerializeField] [Range(0,10)] private int highestBaseSceneIndex = 4;
+        public int HighestBaseSceneIndex => highestBaseSceneIndex;
 
         public List<string> sceneNames;
         public string StartScene = "1. Standard";
@@ -21,7 +21,7 @@ namespace mrstruijk
         public PhotonView photonView;
 
         public static Action<string> SceneHasBeenLoaded = delegate(string s) {  };
-
+        public static Action BaseScenesHaveBeenLoaded = delegate { };
 
         private void Awake()
         {
@@ -52,7 +52,7 @@ namespace mrstruijk
 
         private void LoadBaseScenes()
         {
-            for (int i = 1; i < baseScenesToLoad; i++)
+            for (int i = 1; i < highestBaseSceneIndex; i++)
             {
                 RPCLoadSceneAddtively(sceneNames[i]);
             }
@@ -65,7 +65,7 @@ namespace mrstruijk
         }
 
 
-        public static int GetLatestLoadedSceneIndex()
+        public int GetLatestLoadedSceneIndex()
         {
             return SceneManager.GetSceneAt(SceneManager.sceneCount - 1).buildIndex;
         }
@@ -110,7 +110,7 @@ namespace mrstruijk
                 yield break;
             }
 
-            if (sceneCount <= baseScenesToLoad)
+            if (sceneCount <= highestBaseSceneIndex)
             {
                 yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             }
@@ -121,6 +121,11 @@ namespace mrstruijk
             }
 
             SceneHasBeenLoaded(sceneName);
+
+            if (sceneName == sceneNames[HighestBaseSceneIndex])
+            {
+                BaseScenesHaveBeenLoaded.Invoke();
+            }
         }
 
 
