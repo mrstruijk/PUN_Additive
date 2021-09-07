@@ -56,7 +56,7 @@ public class PhotonConnectionSettingsSO : ScriptableObject
 
 
 	/// <summary>
-	/// Called from UI
+	/// Can be called from UI, but should happen automatically
 	/// </summary>
 	public void Connect()
 	{

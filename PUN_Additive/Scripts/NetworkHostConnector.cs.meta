@@ -3,7 +3,10 @@ guid: 58f9dc5d5bb1a4eba9a4054ead6901bf
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - sceneManagementPrefab: {instanceID: 0}
+  - connectionSettings: {fileID: 11400000, guid: b7f918f519fc94d4da8c0dd34b9b0b72,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
