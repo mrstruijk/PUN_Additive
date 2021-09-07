@@ -17,7 +17,6 @@ namespace mrstruijk.PUN
         private SceneManagement sceneManagement;
 
 
-
         private void Start()
         {
             AutoSyncScenesAcrossClients(PhotonConnectionSettingsSO.AutoSyncScenes);
@@ -91,7 +90,7 @@ namespace mrstruijk.PUN
                     PhotonNetwork.InstantiateRoomObject(sceneManagementPrefab.name, transform.position, Quaternion.identity, 0);
                     sceneManagement = FindObjectOfType<SceneManagement>();
                     sceneManagement.transform.parent = transform.parent;
-                    sceneManagement.RPCLoadSceneAddtively(sceneManagement.DefaultScene);
+                    sceneManagement.RPCLoadSceneAddtively(sceneManagement.StartScene);
                 }
             }
             else
@@ -112,7 +111,7 @@ namespace mrstruijk.PUN
             }
 
             sceneManagement = FindObjectOfType<SceneManagement>();
-            sceneManagement.LoadClientLocalScene(sceneManagement.DefaultScene);
+            sceneManagement.LoadSceneLocally(sceneManagement.StartScene);
         }
 
 
@@ -124,7 +123,8 @@ namespace mrstruijk.PUN
         }
 
 
-        [Button] private void TakeoverSceneManger()
+        [Button]
+        private void TakeoverSceneManager()
         {
             sceneManagement.photonView.OwnershipTransfer = OwnershipOption.Takeover;
             sceneManagement.photonView.TransferOwnership(PhotonNetwork.LocalPlayer);

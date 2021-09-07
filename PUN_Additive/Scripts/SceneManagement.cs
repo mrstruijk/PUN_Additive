@@ -12,11 +12,11 @@ namespace mrstruijk
 {
     public class SceneManagement : MonoBehaviour
     {
-        [SerializeField] [Range(0,5)] private int maxLoadedBaseScenes = 1;
-        public int MaxLoadedBaseScenes => maxLoadedBaseScenes;
+        [SerializeField] [Range(0,10)] private int baseScenesToLoad = 4;
+        public int BaseScenesToLoad => baseScenesToLoad;
 
         public List<string> sceneNames;
-        public string DefaultScene => sceneNames[1];
+        public string StartScene = "1. Standard";
 
         public PhotonView photonView;
 
@@ -35,16 +35,26 @@ namespace mrstruijk
         private void OnEnable()
         {
             GetSceneNameList();
+            LoadBaseScenes();
         }
 
 
         public void GetSceneNameList()
         {
-            var sceneNumber = SceneManager.sceneCountInBuildSettings;
+            var sceneCount = SceneManager.sceneCountInBuildSettings;
 
-            for (int i = 0; i < sceneNumber; i++)
+            for (int i = 0; i < sceneCount; i++)
             {
                 sceneNames.Add(Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i)));
+            }
+        }
+
+
+        private void LoadBaseScenes()
+        {
+            for (int i = 1; i < baseScenesToLoad; i++)
+            {
+                RPCLoadSceneAddtively(sceneNames[i]);
             }
         }
 
@@ -61,6 +71,7 @@ namespace mrstruijk
         }
 
 
+        // TODO: Check this method and ones below. Why double call to !IsMaster? Is that second method even called at all?
         public void RPCLoadSceneAddtively(string sceneName)
         {
             if (!PhotonConnectionSettingsSO.IsMaster)
@@ -70,26 +81,26 @@ namespace mrstruijk
 
             photonView.RPC("LoadMasterLocalScene", RpcTarget.All, sceneName);
 
-            LoadClientLocalScene(sceneName);
+            LoadSceneLocally(sceneName);
         }
 
 
         [PunRPC] public void LoadMasterLocalScene(string sceneName)
         {
-            StartCoroutine(LoadLocalSceneAsync(sceneName));
+            StartCoroutine(LoadSceneAsync(sceneName));
         }
 
 
-        public void LoadClientLocalScene(string sceneName)
+        public void LoadSceneLocally(string sceneName)
         {
             if (!PhotonConnectionSettingsSO.IsMaster)
             {
-                StartCoroutine(LoadLocalSceneAsync(sceneName));
+                StartCoroutine(LoadSceneAsync(sceneName));
             }
         }
 
 
-        private IEnumerator LoadLocalSceneAsync(string sceneName)
+        private IEnumerator LoadSceneAsync(string sceneName)
         {
             var sceneCount = SceneManager.sceneCount;
             var latestLoadedScene = SceneManager.GetSceneAt(sceneCount - 1);
@@ -99,7 +110,7 @@ namespace mrstruijk
                 yield break;
             }
 
-            if (sceneCount <= maxLoadedBaseScenes)
+            if (sceneCount <= baseScenesToLoad)
             {
                 yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             }
