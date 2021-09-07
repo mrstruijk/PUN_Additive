@@ -25,7 +25,10 @@ namespace mrstruijk
 
         private void Awake()
         {
-            photonView = PhotonView.Get(this);
+            if (!photonView)
+            {
+                photonView = PhotonView.Get(this);
+            }
         }
 
 

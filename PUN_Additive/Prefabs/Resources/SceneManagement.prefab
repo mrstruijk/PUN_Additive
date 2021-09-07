@@ -68,4 +68,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLoadedBaseScenes: 1
   sceneNames: []
-  photonView: {fileID: 0}
+  photonView: {fileID: 5382615842235779258}

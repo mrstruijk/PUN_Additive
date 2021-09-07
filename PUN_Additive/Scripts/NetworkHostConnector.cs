@@ -16,11 +16,6 @@ namespace mrstruijk.PUN
 
         private SceneManagement sceneManagement;
 
-        public override void OnEnable()
-        {
-            base.OnEnable();
-            SendActionIfNotOnPlatform.DoOnOtherPlatform += Connect;
-        }
 
 
         private void Start()
@@ -216,13 +211,6 @@ namespace mrstruijk.PUN
             connectionSettings.IsConnecting = false;
 
             Debug.LogWarningFormat("PUN OnDisconnected() was called by PUN with reason {0}", cause);
-        }
-
-
-        public override void OnDisable()
-        {
-            base.OnDisable();
-            SendActionIfNotOnPlatform.DoOnOtherPlatform -= Connect;
         }
     }
 }
