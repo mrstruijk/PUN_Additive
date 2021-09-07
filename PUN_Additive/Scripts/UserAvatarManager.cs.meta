@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f34488e609c5b4906a05b22b4ad2bf9f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - buildRole: {fileID: 11400000, guid: fbbf7a63871904328bd6be418e781e38, type: 2}
+  - editorRole: {fileID: 11400000, guid: 19b87dac3e55547a3a1bdde60f2d9d69, type: 2}
+  - role: {fileID: 11400000, guid: 56d3625907d2f41059e5e5dab30154a3, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
