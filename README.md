@@ -2,11 +2,11 @@
 
 Photon does not natively allow additive scene loading. This is unfortunate, since this is very convenient. A package that allows this is currently under Open Source development. Instructions for getting the package are below.
 
-To enable this package to work, you first need to have either the free [[PUN 2 asset>>https://assetstore.unity.com/packages/tools/network/pun-2-free-119922]], or the paid [[PUN 2+ asset>>https://assetstore.unity.com/packages/tools/network/photon-pun-2-120838]] installed from the Unity Asset Store.
+To enable this package to work, you first need to have either the free [PUN 2 asset](https://assetstore.unity.com/packages/tools/network/pun-2-free-119922), or the paid [PUN 2+ asset](https://assetstore.unity.com/packages/tools/network/photon-pun-2-120838) installed from the Unity Asset Store.
 
-If you're new to Photon: you can find an excellent tutorial [[on the PhotonEngine website>>https://doc.photonengine.com/zh-cn/pun/v2/demos-and-tutorials/pun-basics-tutorial/intro]].
+If you're new to Photon: you can find an excellent tutorial [on the PhotonEngine website](https://doc.photonengine.com/zh-cn/pun/v2/demos-and-tutorials/pun-basics-tutorial/intro).
 
-The PUN Additive Scene Loading package can be obtained through [[this git repo>>https://github.com/mrstruijk/PUN_Additive]].
+The PUN Additive Scene Loading package can be obtained through this git repo.
 
 If you just want to use the package as is:
 
