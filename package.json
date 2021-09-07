@@ -1,6 +1,6 @@
 {
   "name": "com.mrstruijk.pun_additive",
-  "version": "0.0.2-preview.1",
+  "version": "0.0.3-preview.1",
   "displayName": "PUN Additive Scene Loading",
   "description": "This allows additive scene loading in PUN 2. You will need to download PUN 2 separately from the Asset Store",
   "unity": "2021.1",
