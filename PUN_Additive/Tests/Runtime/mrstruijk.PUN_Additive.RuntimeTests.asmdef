@@ -1,5 +1,5 @@
 {
-    "name": "PlayModeTests",
+    "name": "mrstruijk.PUN_Additive.RuntimeTests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
