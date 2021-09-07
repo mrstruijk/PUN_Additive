@@ -1,7 +1,6 @@
 using System.Collections;
 using Photon.Pun;
 using Photon.Realtime;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 
@@ -11,7 +10,6 @@ namespace mrstruijk.PUN
     {
         [SerializeField] private GameObject sceneManagementPrefab;
 
-        [InlineEditor(InlineEditorObjectFieldModes.Foldout)]
         public PhotonConnectionSettingsSO connectionSettings;
 
         private SceneManagement sceneManagement;
@@ -123,7 +121,6 @@ namespace mrstruijk.PUN
         }
 
 
-        [Button]
         private void TakeoverSceneManager()
         {
             sceneManagement.photonView.OwnershipTransfer = OwnershipOption.Takeover;
