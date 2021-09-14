@@ -18,7 +18,7 @@ namespace mrstruijk
         public List<string> sceneNames;
         public string StartScene = "1. Standard";
 
-        public PhotonView photonView;
+        [HideInInspector] public PhotonView photonView;
 
         public static Action<string> SceneHasBeenLoaded = delegate(string s) {  };
         public static Action BaseScenesHaveBeenLoaded = delegate { };
