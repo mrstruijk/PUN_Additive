@@ -137,6 +137,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkHost
       objectReference: {fileID: 0}
+    - target: {fileID: 7616083280825103794, guid: 96f5eaea6b6e74f02b533786e612ea33,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7616083280825103795, guid: 96f5eaea6b6e74f02b533786e612ea33,
         type: 3}
       propertyPath: m_RootOrder
