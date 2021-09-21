@@ -1,4 +1,4 @@
-using System.Collections;
+using mrstruijk.Events;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -8,11 +8,7 @@ namespace mrstruijk.PUN
 {
     public class NetworkHostConnector : MonoBehaviourPunCallbacks
     {
-        [SerializeField] private GameObject sceneManagementPrefab;
-
         public PhotonConnectionSettingsSO connectionSettings;
-
-        private SceneManagement sceneManagement;
 
 
         private void Start()
@@ -21,7 +17,7 @@ namespace mrstruijk.PUN
 
             connectionSettings.CreateRoomOptions();
 
-            connectionSettings.ConnectingToMaster();
+            EventSystem.ConnectingToMaster?.Invoke();
 
             ConnectUsingSettings();
         }
@@ -81,35 +77,7 @@ namespace mrstruijk.PUN
 
         public override void OnJoinedRoom()
         {
-            if (PhotonConnectionSettingsSO.IsMaster)
-            {
-                if (sceneManagement == null)
-                {
-                    PhotonNetwork.InstantiateRoomObject(sceneManagementPrefab.name, transform.position, Quaternion.identity, 0);
-                    sceneManagement = FindObjectOfType<SceneManagement>();
-                    sceneManagement.transform.parent = transform.parent;
-                    sceneManagement.RPCLoadSceneAddtively(sceneManagement.StartScene);
-                }
-            }
-            else
-            {
-                StartCoroutine(FindSceneManagement());
-            }
-        }
-
-
-        private IEnumerator FindSceneManagement()
-        {
-            bool found = false;
-
-            while (found == false)
-            {
-                found = FindObjectOfType<SceneManagement>();
-                yield return null;
-            }
-
-            sceneManagement = FindObjectOfType<SceneManagement>();
-            sceneManagement.LoadSceneLocally(sceneManagement.StartScene);
+            EventSystem.OnJoinedRoom?.Invoke();
         }
 
 
@@ -118,13 +86,6 @@ namespace mrstruijk.PUN
             Debug.LogErrorFormat("Room creation failed with error code {0} and error message {1}", returnCode, message);
 
             PhotonNetwork.CreateRoom(connectionSettings.roomName, connectionSettings.roomOptions);
-        }
-
-
-        private void TakeoverSceneManager()
-        {
-            sceneManagement.photonView.OwnershipTransfer = OwnershipOption.Takeover;
-            sceneManagement.photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
         }
 
 
@@ -194,7 +155,7 @@ namespace mrstruijk.PUN
 
         private static void DoStuffBasedOnOtherRole(Player other)
         {
-            var role = "PatientRole";
+            const string role = "PatientRole";
 
             if ((string) other.CustomProperties["Role"] == role) // Some other code. Using this, we can instantiate / load specific levels or gameobjects based on what role is entering
             {

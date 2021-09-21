@@ -14,9 +14,6 @@ public class PhotonConnectionSettingsSO : ScriptableObject
 
 	public RoomOptions roomOptions;
 
-	public Action ConnectingToMaster = delegate { };
-
-
 	private const bool autoSyncScenes = true;
 	public static bool AutoSyncScenes
 	{

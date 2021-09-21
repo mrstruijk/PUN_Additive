@@ -7,7 +7,8 @@
         "mrstruijk",
         "PhotonRealtime",
         "PhotonUnityNetworking",
-        "mrstruijk.PUN_Additive"
+        "mrstruijk.PUN_Additive",
+        "mrstruijk.SceneManagement"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

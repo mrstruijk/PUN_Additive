@@ -1,11 +1,10 @@
 using System.Collections;
-using mrstruijk;
 using NUnit.Framework;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.TestTools;
 // ReSharper disable ClassNeverInstantiated.Global
-
+using mrstruijk.SceneManagement;
 
 public class PlayPUNTests
 {
@@ -74,6 +73,7 @@ public class PlayPUNTests
             Debug.LogFormat("The newly loaded scene is {0}", newScene);
             Assert.AreNotEqual(startScene, newScene);
         }
+
 
 
         [UnityTearDown] public IEnumerator PUNTearDown()
