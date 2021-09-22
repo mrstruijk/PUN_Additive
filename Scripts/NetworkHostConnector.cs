@@ -167,8 +167,10 @@ namespace mrstruijk.PUN
         public override void OnDisconnected(DisconnectCause cause)
         {
             connectionSettings.IsConnecting = false;
-
-            Debug.LogWarningFormat("PUN OnDisconnected() was called by PUN with reason {0}", cause);
+            if (PhotonNetwork.LogLevel >= PunLogLevel.Informational)
+            {
+                Debug.LogWarningFormat("PUN OnDisconnected() was called by PUN with reason {0}", cause);
+            }
         }
     }
 }

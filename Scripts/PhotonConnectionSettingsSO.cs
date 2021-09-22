@@ -1,4 +1,3 @@
-using System;
 using mrstruijk.PUN;
 using Photon.Pun;
 using Photon.Realtime;
