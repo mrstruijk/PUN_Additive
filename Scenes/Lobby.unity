@@ -201,7 +201,7 @@ PrefabInstance:
     - target: {fileID: 3705233296144023243, guid: 786b9498b882546c7830a73685dfc6e6,
         type: 3}
       propertyPath: autoRole
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3705233296144023243, guid: 786b9498b882546c7830a73685dfc6e6,
         type: 3}
