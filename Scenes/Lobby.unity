@@ -201,8 +201,14 @@ PrefabInstance:
     - target: {fileID: 3705233296144023243, guid: 786b9498b882546c7830a73685dfc6e6,
         type: 3}
       propertyPath: autoRole
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3705233296144023243, guid: 786b9498b882546c7830a73685dfc6e6,
+        type: 3}
+      propertyPath: buildRole
+      value: 
+      objectReference: {fileID: 11400000, guid: 2520eccdecfbb4cd6aedb2e4e756df2d,
+        type: 2}
     - target: {fileID: 3705233296144023243, guid: 786b9498b882546c7830a73685dfc6e6,
         type: 3}
       propertyPath: editorRole
