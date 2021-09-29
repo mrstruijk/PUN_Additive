@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
@@ -7,22 +9,23 @@ using UnityEngine;
 
 public class PUNObjectsWindow : EditorWindow
 {
-    private const string prefabPath = "Assets/";
+	private const string prefabPath = "Assets/";
+	//"Assets/_mrstruijk/Components/_SceneManagement/Prefabs/Resources";
 
-	private List<PUNType.PUNTypes> categories;
-	private List<string> categoryLabels;
-	private PUNType.PUNTypes selectedCategory;
+	private List<PUNItem.PUNType> punTypes;
+	private List<string> typeLabels;
+	private PUNItem.PUNType selectedType;
 
-	private List<PhotonView> photonViews;
-	private Dictionary<PUNType.PUNTypes, List<PhotonView>> categorizedPhotonViews;
+	private List<PUNItem> punItems;
+	private Dictionary<PUNItem.PUNType, List<PUNItem>> categorizedPUNItems;
 
-	private Dictionary<PhotonView, Texture2D> previews;
+	private Dictionary<PUNItem, Texture2D> previews;
 
 	private Vector2 scrollPosition;
 	private readonly Vector2 previewSize = new Vector2(80, 90);
 
-	public delegate void itemSelectedDelegate (PhotonView item,Texture2D preview);
-	public static event itemSelectedDelegate ItemSelectedEvent;
+	// public delegate void itemSelectedDelegate (PhotonView item,Texture2D preview);
+	// public static event itemSelectedDelegate ItemSelectedEvent;
 
 	private static PUNObjectsWindow instance;
 
@@ -38,12 +41,12 @@ public class PUNObjectsWindow : EditorWindow
 
 	private void OnEnable()
 	{
-		if (categories == null)
+		if (punTypes == null)
 		{
 			InitCategories();
 		}
 
-		if (categorizedPhotonViews == null)
+		if (categorizedPUNItems == null)
 		{
 			InitContent();
 		}
@@ -52,32 +55,32 @@ public class PUNObjectsWindow : EditorWindow
 
 	private void InitCategories()
 	{
-		categories = EditorUtils.GetListFromEnum<PUNType.PUNTypes>();
-		categoryLabels = new List<string>();
+		punTypes = EditorUtils.GetListFromEnum<PUNItem.PUNType>();
+		typeLabels = new List<string>();
 
-		foreach (var category in categories)
+		foreach (var type in punTypes)
 		{
-			categoryLabels.Add(category.ToString());
+			typeLabels.Add(type.ToString());
 		}
 	}
 
 
 	private void InitContent()
 	{
-		photonViews = EditorUtils.GetAssetWithScript<PhotonView>(prefabPath);
+		punItems = EditorUtils.GetAssetWithScript<PUNItem>(prefabPath);
 
-		categorizedPhotonViews = new Dictionary<PUNType.PUNTypes, List<PhotonView>>();
+		categorizedPUNItems = new Dictionary<PUNItem.PUNType, List<PUNItem>>();
 
-		previews = new Dictionary<PhotonView, Texture2D>();
+		previews = new Dictionary<PUNItem, Texture2D>();
 
-		foreach (var category in categories)
+		foreach (var punType in punTypes)
 		{
-			categorizedPhotonViews.Add(category, new List<PhotonView>());
+			categorizedPUNItems.Add(punType, new List<PUNItem>());
 		}
 
-		foreach (var item in photonViews)
+		foreach (var item in punItems)
 		{
-			categorizedPhotonViews[PUNType.PUNTypes.Players].Add(item);
+			categorizedPUNItems[item.punType].Add(item);
 		}
 	}
 
@@ -86,8 +89,11 @@ public class PUNObjectsWindow : EditorWindow
 	{
 		DrawTabs();
 		DrawScroll();
+	}
 
-		if (previews.Count != photonViews.Count) // This used to be in Update, but this seems fine as well.
+	private void Update()
+	{
+		if (previews.Count != punItems.Count) // This used to be in Update, but this seems fine as well.
 		{
 			GeneratePreviews();
 		}
@@ -96,15 +102,15 @@ public class PUNObjectsWindow : EditorWindow
 
 	private void DrawTabs()
 	{
-		var index = (int) selectedCategory;
-		index = GUILayout.Toolbar(index, categoryLabels.ToArray());
-		selectedCategory = categories[index];
+		var index = (int) selectedType;
+		index = GUILayout.Toolbar(index, typeLabels.ToArray());
+		selectedType = punTypes[index];
 	}
 
 
 	private void DrawScroll()
 	{
-		if (categorizedPhotonViews[selectedCategory].Count == 0)
+		if (categorizedPUNItems[selectedType].Count == 0)
 		{
 			EditorGUILayout.HelpBox("This category is empty!", MessageType.Info);
 			return;
@@ -125,16 +131,16 @@ public class PUNObjectsWindow : EditorWindow
 	{
 		var guiContents = new List<GUIContent>();
 
-		if (previews.Count == photonViews.Count)
+		if (previews.Count == punItems.Count)
 		{
-			var totalItems = categorizedPhotonViews[selectedCategory].Count;
+			var totalItems = categorizedPUNItems[selectedType].Count;
 
 			for (var i = 0; i < totalItems; i++)
 			{
 				var guiContent = new GUIContent
 				{
-					text = categorizedPhotonViews[selectedCategory][i].name,
-					image = previews[categorizedPhotonViews[selectedCategory][i]]
+					text = categorizedPUNItems[selectedType][i].itemName,
+					image = previews[categorizedPUNItems[selectedType][i]]
 				};
 
 				guiContents.Add(guiContent);
@@ -163,21 +169,20 @@ public class PUNObjectsWindow : EditorWindow
 	{
 		if (index != -1)
 		{
-			var selectedItem = categorizedPhotonViews[selectedCategory][index];
+			var selectedItem = categorizedPUNItems[selectedType][index];
 
-			ItemSelectedEvent?.Invoke (selectedItem, previews [selectedItem]);
+			// ItemSelectedEvent?.Invoke (selectedItem, previews [selectedItem]);
 		}
 	}
 
 
 	private void GeneratePreviews()
 	{
-		foreach (var item in photonViews)
+		foreach (var item in punItems)
 		{
 			if (!previews.ContainsKey(item))
 			{
 				var preview = AssetPreview.GetAssetPreview(item.gameObject);
-
 				if (preview != null)
 				{
 					previews.Add(item, preview);

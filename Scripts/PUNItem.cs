@@ -5,14 +5,15 @@ public class PUNItem : MonoBehaviour
 {
 	#if UNITY_EDITOR
 
-	public PUNTypes punType = PUNTypes.Players;
+	public PUNType punType = PUNType.Players;
 	public string itemName = "";
 	public Object inspectedScript;
 
-	public enum PUNTypes
+	public enum PUNType
 	{
 		Players,
-		RoomObjects
+		RoomObjects,
+		NetworkObjects
 	}
 
 	#endif
