@@ -38,4 +38,3 @@ namespace mrstruijk.SceneManagement
 		#endif
 	}
 }
-
