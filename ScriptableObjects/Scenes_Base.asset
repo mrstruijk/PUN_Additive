@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Scenes_Base
   m_EditorClassIdentifier: 
   scenes:
-  - sceneAsset: {fileID: 102900000, guid: 7769f33fb4fa2e5458344a36556ad760, type: 3}
-    scenePath: Assets/ThirdPartyAssets/Environments && Props/Fantasy Forest Environment
-      Free Sample/Scenes/FantasyForest.unity
-  - sceneAsset: {fileID: 102900000, guid: b6c1ae3b4c6574100b5bebb5d066d39c, type: 3}
-    scenePath: Assets/_mrstruijk/Components/Environment/Scenes/1. Standard.unity
-  - sceneAsset: {fileID: 102900000, guid: b126eae06de5e4a84b66cb0a676eeb08, type: 3}
-    scenePath: Assets/_mrstruijk/Components/Environment/Scenes/2. Dark.unity
+  - sceneAsset: {fileID: 102900000, guid: b806d47caf6054574ae459dad1854622, type: 3}
+    scenePath: Assets/_mrstruijk/Components/_Packages/PUN_Additive/Scenes/Lobby.unity
+  - sceneAsset: {fileID: 102900000, guid: 81d984bd168314099a9535f76df7fe16, type: 3}
+    scenePath: Assets/_mrstruijk/Components/Cinemachine-Cameras/Scenes/Cameras.unity
+  - sceneAsset: {fileID: 102900000, guid: 3353fa4d3a66b480ab357a7e125f2a25, type: 3}
+    scenePath: Assets/_mrstruijk/Components/UI/Scenes/UI.unity
+  - sceneAsset: {fileID: 102900000, guid: 29e16b2d4a24943a0a8e9cad8125d8b4, type: 3}
+    scenePath: Assets/_mrstruijk/Components/RolesPlayers/Scenes/Players.unity

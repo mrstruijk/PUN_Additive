@@ -135,7 +135,7 @@ PrefabInstance:
     - target: {fileID: 3705233296144023241, guid: 786b9498b882546c7830a73685dfc6e6,
         type: 3}
       propertyPath: m_Name
-      value: UserAvatar
+      value: UserAvatarManager
       objectReference: {fileID: 0}
     - target: {fileID: 3705233296144023242, guid: 786b9498b882546c7830a73685dfc6e6,
         type: 3}
@@ -342,9 +342,9 @@ MonoBehaviour:
   - _gameObject: {fileID: 182633377}
     _prefab: Assets/_mrstruijk/Components/_Packages/PUN_Additive/Prefabs/NetworkHost.prefab
   - _gameObject: {fileID: 424980158}
-    _prefab: Assets/_mrstruijk/Components/_SceneManagement/Prefabs/SceneManagementManager.prefab
+    _prefab: Assets/_mrstruijk/Components/_Packages/PUN_Additive/Prefabs/SceneManagementManager.prefab
   - _gameObject: {fileID: 136196707}
-    _prefab: Assets/_mrstruijk/Components/RolesPlayers/Prefabs/UserAvatar.prefab
+    _prefab: Assets/_mrstruijk/Components/RolesPlayers/Prefabs/UserAvatarManager.prefab
 --- !u!4 &1511366119
 Transform:
   m_ObjectHideFlags: 11
