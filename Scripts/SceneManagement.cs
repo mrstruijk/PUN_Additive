@@ -10,20 +10,35 @@ namespace mrstruijk.SceneManagement
 {
 	public class SceneManagement : MonoBehaviour
 	{
-		[SerializeField] private SceneCollection baseSceneCollection;
+		public SceneCollection baseSceneCollection;
 
-		[SerializeField] private SceneCollection areaSceneCollection;
+		public SceneCollection areaSceneCollection;
 
-		[HideInInspector] public PhotonView photonView;
+		public PhotonView PhotonView
+		{
+			get;
+			private set;
+		}
 
 		private Coroutine loadingScene;
 
 
 		private void Awake()
 		{
-			if (!photonView)
+			GetPhotonView();
+		}
+
+
+		private void GetPhotonView()
+		{
+			if (!PhotonView)
 			{
-				photonView = PhotonView.Get(this);
+				PhotonView = PhotonView.Get(this);
+
+				if (!PhotonView)
+				{
+					PhotonView = gameObject.AddComponent<PhotonView>();
+				}
 			}
 		}
 
@@ -41,7 +56,7 @@ namespace mrstruijk.SceneManagement
 		}
 
 
-		private IEnumerator LoadScenes(List<string> scenesToLoad)
+		public IEnumerator LoadScenes(List<string> scenesToLoad)
 		{
 			for (var i = 0; i < scenesToLoad.Count; i++)
 			{
@@ -55,7 +70,7 @@ namespace mrstruijk.SceneManagement
 		{
 			if (PhotonConnectionSettingsSO.IsMaster)
 			{
-				photonView.RPC("LoadScene", RpcTarget.All, sceneName);
+				PhotonView.RPC("LoadScene", RpcTarget.All, sceneName);
 			}
 			else if (!PhotonConnectionSettingsSO.IsMaster)
 			{
@@ -135,7 +150,7 @@ namespace mrstruijk.SceneManagement
 		}
 
 
-		public static string GetLatestLoadedSceneName()
+		public string GetLatestLoadedSceneName()
 		{
 			return SceneManager.GetSceneAt(SceneManager.sceneCount - 1).name;
 		}

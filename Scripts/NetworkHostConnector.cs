@@ -13,7 +13,7 @@ namespace mrstruijk.PUN
 
         private void Start()
         {
-            AutoSyncScenesAcrossClients(PhotonConnectionSettingsSO.AutoSyncScenes);
+            AutoSyncScenesAcrossClients(connectionSettings.AutoSyncScenes);
 
             connectionSettings.CreateRoomOptions();
 

@@ -14,9 +14,10 @@ public class PhotonConnectionSettingsSO : ScriptableObject
 	public RoomOptions roomOptions;
 
 	private const bool autoSyncScenes = true;
-	public static bool AutoSyncScenes
+	public bool AutoSyncScenes
 	{
-		get => autoSyncScenes;
+		get => PhotonNetwork.AutomaticallySyncScene;
+		set => PhotonNetwork.AutomaticallySyncScene = value;
 	}
 
 

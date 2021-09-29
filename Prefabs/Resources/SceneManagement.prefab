@@ -123,7 +123,6 @@ MonoBehaviour:
     type: 2}
   areaSceneCollection: {fileID: 11400000, guid: bef7c42e9d5f84c26ab14c5bab03442a,
     type: 2}
-  photonView: {fileID: 0}
 --- !u!114 &1434649531411998203
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -51,8 +51,8 @@ namespace mrstruijk.SceneManagement
 
 		private void TakeoverSceneManager()
 		{
-			sceneManagement.photonView.OwnershipTransfer = OwnershipOption.Takeover;
-			sceneManagement.photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+			sceneManagement.PhotonView.OwnershipTransfer = OwnershipOption.Takeover;
+			sceneManagement.PhotonView.TransferOwnership(PhotonNetwork.LocalPlayer);
 		}
 
 

@@ -8,7 +8,8 @@
         "PhotonRealtime",
         "PhotonUnityNetworking",
         "mrstruijk.PUN_Additive",
-        "mrstruijk.SceneManagement"
+        "JohannesMP.SceneReference",
+        "mrstruijk.Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
