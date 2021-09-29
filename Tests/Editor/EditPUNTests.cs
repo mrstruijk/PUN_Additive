@@ -15,9 +15,9 @@ public class EditPUNTests
         }
 
 
-        [Test] public void AutoSyncIsEnabledTest()
+        [Test] public void AutoSyncIsDisabled()
         {
-            Assert.AreEqual(true, settings.AutoSyncScenes);
+            Assert.AreEqual(false, settings.AutoSyncScenes);
         }
 
 

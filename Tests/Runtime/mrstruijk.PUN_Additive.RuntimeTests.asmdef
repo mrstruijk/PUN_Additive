@@ -9,7 +9,8 @@
         "PhotonUnityNetworking",
         "mrstruijk.PUN_Additive",
         "JohannesMP.SceneReference",
-        "mrstruijk.Events"
+        "mrstruijk.Events",
+        "mrstruijk.RolesPlayers"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
