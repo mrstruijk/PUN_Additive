@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: Scenes_Areas
   m_EditorClassIdentifier: 
   scenes:
-  - sceneAsset: {fileID: 102900000, guid: 7769f33fb4fa2e5458344a36556ad760, type: 3}
-    scenePath: Assets/ThirdPartyAssets/Environments && Props/Fantasy Forest Environment
-      Free Sample/Scenes/FantasyForest.unity
+  - sceneAsset: {fileID: 102900000, guid: add39a01050754733b1383e62f76fe16, type: 3}
+    scenePath: Assets/_mrstruijk/Components/_Scenes/FantasyForest.unity
   - sceneAsset: {fileID: 102900000, guid: b6c1ae3b4c6574100b5bebb5d066d39c, type: 3}
-    scenePath: Assets/_mrstruijk/Components/Environment/Scenes/1. Standard.unity
+    scenePath: Assets/_mrstruijk/Components/_Scenes/1. Standard.unity
   - sceneAsset: {fileID: 102900000, guid: b126eae06de5e4a84b66cb0a676eeb08, type: 3}
-    scenePath: Assets/_mrstruijk/Components/Environment/Scenes/2. Dark.unity
+    scenePath: Assets/_mrstruijk/Components/_Scenes/2. Dark.unity
   - sceneAsset: {fileID: 102900000, guid: fa9c139cbed804a0982a1acf375a83fb, type: 3}
-    scenePath: Assets/_mrstruijk/Components/Environment/Scenes/3. Living Room.unity
+    scenePath: Assets/_mrstruijk/Components/_Scenes/3. Living Room.unity
   - sceneAsset: {fileID: 102900000, guid: 56343f274d943844b8794472cb0f2bee, type: 3}
-    scenePath: Assets/_mrstruijk/Components/Environment/Scenes/4. Night.unity
+    scenePath: Assets/_mrstruijk/Components/_Scenes/4. Night.unity
