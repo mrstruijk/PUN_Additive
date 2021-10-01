@@ -11,8 +11,13 @@ namespace mrstruijk.SceneManagement
 	public class SceneManagement : MonoBehaviour
 	{
 		public SceneCollection baseSceneCollection;
-
+		private string[] baseArray;
 		public SceneCollection areaSceneCollection;
+		private string[] areaArray;
+
+		public List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
+
+		private LoadingScreen loadingScreen;
 
 		public PhotonView PhotonView
 		{
@@ -20,12 +25,22 @@ namespace mrstruijk.SceneManagement
 			private set;
 		}
 
-		private Coroutine loadingScene;
+		private Coroutine sceneIsLoading;
 
 
 		private void Awake()
 		{
 			GetPhotonView();
+			loadingScreen = FindObjectOfType<LoadingScreen>();
+
+			baseArray = new string[baseSceneCollection.SceneNames.Count];
+
+			for (var i = 0; i < baseSceneCollection.SceneNames.Count; i++)
+			{
+				baseArray[i] = baseSceneCollection.SceneNames[i];
+			}
+
+			areaArray = new string[] {areaSceneCollection.SceneNames[0]};
 		}
 
 
@@ -45,93 +60,124 @@ namespace mrstruijk.SceneManagement
 
 		private void OnEnable()
 		{
-			StartCoroutine(StartBaseAndStartingArea());
+			RPCLoadSceneAddtively(baseArray);
+
+			RPCLoadSceneAddtively(areaArray);
 		}
 
 
-		private IEnumerator StartBaseAndStartingArea()
-		{
-			yield return StartCoroutine(LoadScenes(baseSceneCollection.SceneNames));
-			yield return StartCoroutine(LoadScenes(new List<string> {areaSceneCollection.SceneNames[0]}));
-		}
-
-
-		public IEnumerator LoadScenes(List<string> scenesToLoad)
-		{
-			for (var i = 0; i < scenesToLoad.Count; i++)
-			{
-				yield return loadingScene == null;
-				RPCLoadSceneAddtively(scenesToLoad[i]);
-			}
-		}
-
-
-		public void RPCLoadSceneAddtively(string sceneName)
+		public void RPCLoadSceneAddtively(string[] sceneNames)
 		{
 			if (PhotonConnectionSettingsSO.IsMaster)
 			{
-				PhotonView.RPC("LoadScene", RpcTarget.All, sceneName);
+				if (sceneNames.Length > 1)
+				{
+					PhotonView.RPC("LoadScenesAsync", RpcTarget.All, sceneNames);
+				}
+				else if (sceneNames.Length == 1)
+				{
+					PhotonView.RPC("LoadSceneAsync", RpcTarget.All, sceneNames[0]);
+				}
 			}
 			else if (!PhotonConnectionSettingsSO.IsMaster)
 			{
-				LoadScene(sceneName);
+				if (sceneNames.Length > 1)
+				{
+					LoadScenesAsync(sceneNames);
+				}
+				else if (sceneNames.Length == 1)
+				{
+					LoadSceneAsync(sceneNames[0]);
+				}
 			}
 		}
 
 
-		[PunRPC]
-		private void LoadScene(string sceneName)
-		{
-			loadingScene = StartCoroutine(LoadSceneAsync(sceneName));
-		}
-
-
-		private IEnumerator LoadSceneAsync(string sceneName)
+		[PunRPC] private void LoadScenesAsync(string[] sceneNames)
 		{
 			var loadedSceneList = new List<string>();
-			for (int i = 0; i < SceneManager.sceneCount; i++)
+
+			for (var i = 0; i < SceneManager.sceneCount; i++)
 			{
 				loadedSceneList.Add(SceneManager.GetSceneAt(i).name);
 			}
 
-			foreach (var areaSceneName in areaSceneCollection.SceneNames)
+			foreach (var scene in sceneNames)
 			{
-				if (loadedSceneList.Contains(areaSceneName) && areaSceneName != sceneName)
+				if (loadedSceneList.Contains(scene))
 				{
-					yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-					yield return SceneManager.UnloadSceneAsync(areaSceneName);
-					SendSceneLoadEvents(sceneName);
-					SetActiveScene();
-					yield break;
+					// scenesLoading.Add(SceneManager.UnloadSceneAsync(scene));
+
+					if (PhotonNetwork.LogLevel >= PunLogLevel.Full)
+					{
+						Debug.LogFormat("Scene {0} was already loaded at time: {1}", scene, Time.time);
+					}
+
+					continue;
 				}
-			}
 
-			if (!loadedSceneList.Contains(sceneName))
-			{
-				yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
-				SendSceneLoadEvents(sceneName);
+				scenesLoading.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
+				SendSceneLoadEvents(scene);
 				SetActiveScene();
 			}
-			else
+
+
+			StartCoroutine(GetSceneLoadProgress());
+		}
+
+
+		[PunRPC] private void LoadSceneAsync(string sceneName)
+		{
+			var loadedSceneList = new List<string>();
+
+			for (var i = 0; i < SceneManager.sceneCount; i++)
 			{
+				loadedSceneList.Add(SceneManager.GetSceneAt(i).name);
+			}
+
+			if (loadedSceneList.Contains(sceneName))
+			{
+				// scenesLoading.Add(SceneManager.UnloadSceneAsync(scene));
+
 				if (PhotonNetwork.LogLevel >= PunLogLevel.Full)
 				{
 					Debug.LogFormat("Scene {0} was already loaded at time: {1}", sceneName, Time.time);
 				}
+
+				return;
 			}
+
+			scenesLoading.Add(SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
+			SendSceneLoadEvents(sceneName);
+			SetActiveScene();
+
+
+			StartCoroutine(GetSceneLoadProgress());
+		}
+
+
+		private IEnumerator GetSceneLoadProgress()
+		{
+			for (var i = 0; i < scenesLoading.Count; i++)
+			{
+				while (!scenesLoading[i].isDone)
+				{
+					yield return null;
+				}
+			}
+
+			yield return new WaitForSeconds(3f);
+			SceneManager.UnloadSceneAsync(loadingScreen.loadingScreen.SceneNames[0]);
 		}
 
 
 		private void SendSceneLoadEvents(string sceneName)
 		{
-			if (sceneName == baseSceneCollection.SceneNames[baseSceneCollection.SceneNames.Count - 1])
+			EventSystem.SceneHasBeenLoaded?.Invoke(sceneName);
+
+			if (areaSceneCollection.SceneNames.Contains(sceneName))
 			{
 				EventSystem.BaseScenesHaveBeenLoaded?.Invoke();
-			}
-			else if (areaSceneCollection.SceneNames.Contains(sceneName))
-			{
-				EventSystem.AreaSceneHasBeenLoaded?.Invoke(sceneName);
 			}
 		}
 
@@ -142,10 +188,7 @@ namespace mrstruijk.SceneManagement
 
 			if (scene.isLoaded)
 			{
-				if (areaSceneCollection.SceneNames.Contains(scene.name))
-				{
-					SceneManager.SetActiveScene(scene);
-				}
+				SceneManager.SetActiveScene(scene);
 			}
 		}
 
@@ -165,11 +208,13 @@ namespace mrstruijk.SceneManagement
 		public static void MoveToActiveScene(GameObject gameObject, string sceneName)
 		{
 			var scene = SceneManager.GetSceneByName(sceneName);
+
 			if (scene.isLoaded)
 			{
 				SceneManager.MoveGameObjectToScene(gameObject, scene);
 			}
 		}
+
 
 		private void OnDisable()
 		{

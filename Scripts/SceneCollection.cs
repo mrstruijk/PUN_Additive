@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using mrstruijk.SimpleHelpers;
 
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
