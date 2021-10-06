@@ -137,7 +137,7 @@ namespace mrstruijk.PUN
             {
                 return;
             }
-
+            EventSystem.PlayerJoined.Invoke(other.UserId);
             DoStuffBasedOnOtherRole(other);
         }
 
