@@ -10,6 +10,7 @@ namespace mrstruijk.SceneManagement
 	{
 		[SerializeField] private GameObject sceneManagementPrefab;
 		private static SceneManagement sceneManagement;
+		[SerializeField] private PhotonConnectionSettingsSO connectionSettings;
 
 
 		private void OnEnable()
@@ -20,7 +21,7 @@ namespace mrstruijk.SceneManagement
 
 		private void CreateSceneManagement()
 		{
-			if (PhotonConnectionSettingsSO.IsMaster)
+			if (PhotonNetwork.IsMasterClient)
 			{
 				if (sceneManagement == null)
 				{

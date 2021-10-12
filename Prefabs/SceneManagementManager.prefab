@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cdb45706c8a04a4ca1a9ad93db21c5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneManagementPrefab: {fileID: 5382615842235779256, guid: 879642dc4b50d464d924fa113fd8474b,
+  sceneManagementPrefab: {fileID: 6444573315946739112, guid: 879642dc4b50d464d924fa113fd8474b,
     type: 3}
+  connectionSettings: {fileID: 11400000, guid: b7f918f519fc94d4da8c0dd34b9b0b72, type: 2}

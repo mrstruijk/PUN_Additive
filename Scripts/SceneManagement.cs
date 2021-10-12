@@ -68,7 +68,7 @@ namespace mrstruijk.SceneManagement
 
 		public void RPCLoadSceneAddtively(string[] sceneNames)
 		{
-			if (PhotonConnectionSettingsSO.IsMaster)
+			if (PhotonNetwork.IsMasterClient)
 			{
 				if (sceneNames.Length > 1)
 				{
@@ -79,7 +79,7 @@ namespace mrstruijk.SceneManagement
 					PhotonView.RPC("LoadSceneAsync", RpcTarget.All, sceneNames[0]);
 				}
 			}
-			else if (!PhotonConnectionSettingsSO.IsMaster)
+			else if (!PhotonNetwork.IsMasterClient)
 			{
 				if (sceneNames.Length > 1)
 				{

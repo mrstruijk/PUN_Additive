@@ -46,18 +46,18 @@ public class PhotonConnectionSettingsSO : ScriptableObject
 	}
 
 
-	public static bool IsMaster
-	{
-		get => PhotonNetwork.IsMasterClient;
-	}
+	//public bool IsMaster
+	//{
+	//	get => PhotonNetwork.IsMasterClient;
+	//}
 
 
 	/// <summary>
 	/// Can be called from UI, but should happen automatically
 	/// </summary>
-	public void Connect()
+	private void Connect()
 	{
-		FindObjectOfType<NetworkHostConnector>().Connect();
+		// FindObjectOfType<NetworkHostConnector>().Connect();
 	}
 
 

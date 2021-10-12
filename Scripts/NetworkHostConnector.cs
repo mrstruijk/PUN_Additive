@@ -17,8 +17,6 @@ namespace mrstruijk.PUN
 
             connectionSettings.CreateRoomOptions();
 
-            EventSystem.ConnectingToMaster?.Invoke();
-
             ConnectUsingSettings();
         }
 
@@ -26,26 +24,6 @@ namespace mrstruijk.PUN
         private static void AutoSyncScenesAcrossClients(bool autoSync)
         {
             PhotonNetwork.AutomaticallySyncScene = autoSync;
-        }
-
-
-        /// <summary>
-        /// Start the connection process.
-        /// - If already connected, we attempt to join a specific room
-        /// - if not yet connected, Connect this application instance to Photon Cloud Network
-        /// </summary>
-        public void Connect()
-        {
-            if (PhotonNetwork.IsConnected == true)
-            {
-                JoinOrCreateRoom();
-            }
-        }
-
-
-        private void JoinOrCreateRoom()
-        {
-            PhotonNetwork.JoinOrCreateRoom(connectionSettings.roomName, connectionSettings.roomOptions, null);
         }
 
 
@@ -59,6 +37,59 @@ namespace mrstruijk.PUN
             PhotonNetwork.GameVersion = connectionSettings.gameVersion;
 
             connectionSettings.IsConnecting = PhotonNetwork.ConnectUsingSettings();
+
+            EventSystem.ConnectingToMaster?.Invoke();
+        }
+
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            EventSystem.RoomCodeHasBeenEntered += GetRoomCode;
+        }
+
+
+        private void GetRoomCode(string roomCode)
+        {
+            connectionSettings.roomName = roomCode;
+            JoinOrCreateRoom();
+        }
+
+        /// <summary>
+        /// Start the connection process.
+        /// - If already connected, we attempt to join a specific room
+        /// - if not yet connected, Connect this application instance to Photon Cloud Network
+        /// </summary>
+        /*
+        public void Connect()
+        {
+            if (PhotonNetwork.IsConnected == true)
+            {
+                JoinOrCreateRoom();
+                Debug.Log("Is this ever called?");
+            }
+        }
+        */
+
+
+        private void JoinOrCreateRoom()
+        {
+            PhotonNetwork.JoinOrCreateRoom(connectionSettings.roomName, connectionSettings.roomOptions, null);
+
+        }
+
+
+        private void CreateRoom()
+        {
+            PhotonNetwork.CreateRoom(connectionSettings.roomName, connectionSettings.roomOptions);
+            Debug.Log("I created a room");
+        }
+
+
+        private void JoinRoom()
+        {
+            PhotonNetwork.JoinRoom(connectionSettings.roomName);
+            Debug.Log("I didnt create the room I joined");
         }
 
 
@@ -69,14 +100,16 @@ namespace mrstruijk.PUN
                 return;
             }
 
-            JoinOrCreateRoom();
+            Debug.Log("Am now connected to Master");
 
-            connectionSettings.IsConnecting = false;
+            // JoinOrCreateRoom();
+            // connectionSettings.IsConnecting = false;
         }
 
 
         public override void OnJoinedRoom()
         {
+            Debug.Log("I joined a room");
             EventSystem.OnJoinedRoom?.Invoke();
         }
 
@@ -101,9 +134,9 @@ namespace mrstruijk.PUN
         }
 
 
-        private static void KickAllUsers()
+        private void KickAllUsers()
         {
-            if (PhotonConnectionSettingsSO.IsMaster == false)
+            if (PhotonNetwork.IsMasterClient == false)
             {
                 return;
             }
@@ -133,7 +166,7 @@ namespace mrstruijk.PUN
 
         public override void OnPlayerEnteredRoom(Player other)
         {
-            if (!PhotonConnectionSettingsSO.IsMaster)
+            if (!PhotonNetwork.IsMasterClient)
             {
                 return;
             }
@@ -144,7 +177,7 @@ namespace mrstruijk.PUN
 
         public override void OnPlayerLeftRoom(Player other)
         {
-            if (!PhotonConnectionSettingsSO.IsMaster)
+            if (!PhotonNetwork.IsMasterClient)
             {
                 return;
             }
@@ -171,6 +204,13 @@ namespace mrstruijk.PUN
             {
                 Debug.LogWarningFormat("PUN OnDisconnected() was called by PUN with reason {0}", cause);
             }
+        }
+
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+            EventSystem.RoomCodeHasBeenEntered -= GetRoomCode;
         }
     }
 }
